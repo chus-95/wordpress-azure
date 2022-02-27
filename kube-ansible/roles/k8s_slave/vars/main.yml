@@ -1,5 +1,18 @@
 ---
+
 # vars file for k8s_slave
 service_names:
-  - "docker"
-  - "kubelet"
+
+  - cri-o
+  - kubelet
+
+
+ports_slave:
+- { port: "10250", proto: "tcp" }
+- { port: "30000-32767", proto: "tcp" }
+  
+
+token_file: join_token
+
+ad_addr: 192.168.1.44
+cidr_v: 192.169.0.0/16

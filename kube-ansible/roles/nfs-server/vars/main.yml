@@ -3,3 +3,7 @@
 shared_dir:
   - /mysql
   - /wp
+
+dnf_packages: 
+- nfs-utils
+- net-tool

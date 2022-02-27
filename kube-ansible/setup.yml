@@ -1,12 +1,3 @@
-- hosts: localhost
-  gather_facts: no
-  vars_files:
-        - cred.yml
-  tasks:
-    - name: Running EC2 Role
-      include_role:
-        name: ec2
-
 - hosts: nfs_node
   tasks:
     - name: Running NFS Server Role

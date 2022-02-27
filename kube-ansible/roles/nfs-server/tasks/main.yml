@@ -10,16 +10,48 @@
   package:
     name: nfs-utils
     state: present
+  become: yes
 
 - name: Configure nfs server
   copy:
     dest: /etc/exports
     content: |
-      {{ shared_dir[0] }} *(rw,no_root_squash)
-      {{ shared_dir[1] }} *(rw,no_root_squash)
+      {{ shared_dir[0] }} *(rw,no_root_squash,sync)
+      {{ shared_dir[1] }} *(rw,no_root_squash,sync)
 
 - name: Starting nfs server
   service:
     name: nfs-server 
     state: started
     enabled: yes
+
+- name: Recargamos la configuración del fichero /etc/exports
+  shell: exportfs -r
+  become: yes
+
+- name: Habilitamos servicios usados por NFS nfs
+  firewalld:
+    service: nfs
+    permanent: true
+    state: enabled
+  become: yes
+
+- name: Habilitamos servicios usados por NFS rpc-bind
+  firewalld:
+    service: rpc-bind
+    permanent: true
+    state: enabled
+  become: yes
+
+- name: Habilitamos servicios usados por NFS mountd
+  firewalld:
+    service: mountd
+    permanent: true
+    state: enabled
+  become: yes
+  
+- name: Reiniciando el servicio Firewalld 
+  systemd:
+    name: firewalld
+    state: restarted
+  become: yes

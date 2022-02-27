@@ -1,61 +1,137 @@
 ---
 # tasks file for k8s_master
-- name: Add kubeadm repositories on Master Node
-  yum_repository:
-    name: kube
-    description: Kubernetes repo
-    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
-    enabled: 1
-    gpgcheck: 1
-    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
+
+- name: Creating a repository file for Kubernetes
+  file:
+   path: /etc/yum.repos.d/kubernetes.repo
+   state: touch
+
+- name: Set up the kubernetes repository.
+  copy:
+     dest: /etc/yum.repos.d/kubernetes.repo
+      content: |
+        [kubernetes]
+        name=Kubernetes
+        baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64     
+        enabled=1
+        gpgcheck=1
+        repo_gpgcheck=1
+        gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        exclude=kubelet kubeadm kubectl
+    
 - name: Installing Docker & kubeadm on Master Node
-  package:
+  dnf:
     name:
-      - docker
       - kubeadm
+      - kubectl
       - iproute-tc
     state: present
 
-- name: Staring & enabling Docker & kubelet on Master Node
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  loop: "{{ service_names }}"
+- name: Staring & enabling cri-o & kubelet on Master Node
+  systemd:
+   name: "{{ item }}"    
+   state: started
+   enabled: yes
+   masked: no
+   daemon_reload: yes
+  become: yes
+  with_items: "{{ service_names }}"
 
-- name: Pulling the images of k8s master
-  command: kubeadm config images pull
+- name: "Turn off swap"
+  shell: "swapoff -a"
 
-- name: Updating Docker cgroup on Master Node
-  copy:
-    dest: /etc/docker/daemon.json
+
+- name: "Cmmenting Swap in /etc/fstab file"
+  replace:
+    path: /etc/fstab
+    regexp: '^[^#](.*swap*)'
+    replace: '#\1'  
+
+- name: "Updating config file"
+  copy: 
+    dest: /etc/sysctl.d/k8s.conf
     content: |
-      {
-      "exec-opts": ["native.cgroupdriver=systemd"]
-      }
+            net.bridge.bridge-nf-call-ip6tables = 1
+            net.bridge.bridge-nf-call-iptables = 1
+            net.ipv4.ip_forward                 = 1
 
-- name: Restart Docker on Master Node
+- name: "Changing parameters for kernel"
+  command: "sysctl --system"
+
+- name: "Allow Network Ports in Firewalld 1"
+  firewalld:
+    permanent: yes
+    immediate: yes
+    port: "{{item.port}}/{{item.proto}}"
+    state: enabled 
+  with_items: "{{ ports }}"
+
+- name: Enabling Bridge Firewall Rule
+  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+
+
+
+
+- name: Pulling images required for setting up a Kubernetes cluster
+  shell: kubeadm config images pull
+
+- name: FirewallD rules worker
+  firewalld:
+    permanent: yes
+    immediate: yes
+    rich_rule: "{{ item }}"
+    state: enabled
+  with_items:
+   - 'rule family=ipv4 source address=192.168.1.45/32 accept'
+    
+
+- name: Allow Network Ports in Firewalld
+  firewalld:
+   port: "{{item.port}}/{{item.proto}}"
+   state: enabled
+   permanent: yes
+   immediate: yes
+  with_items: "{{ ports_master }}"
+
+- name: Enabling Bridge Firewall Rule
+  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+
+- name: reload
   service:
-    name: docker
-    state: restarted
+    name: firewalld
+    state: reloaded
+  
+- name: Initializing Kubernetes cluster
+  shell: kubeadm init --ignore-preflight-errors=NumCPU --pod-network-cidr={{cidr_v}}
+  
 
-- name: Initializing k8s cluster
-  command: kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem
+- name: Copying required files
+  shell: |
+   mkdir -p $HOME/.kube
+   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+   sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-- name: Setting up kubectl on Master Node
-  shell:
-    cmd: |
-      mkdir -p $HOME/.kube
-      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+- name: tigera instalation
+  shell: |
+   kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 
-- name: Deploying Flannel on Master Node
-  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+- name: definition script
+  shell: |
+   wget https://docs.projectcalico.org/manifests/custom-resources.yaml
+
+- name: Deploying haproxy on Master Node
+  command: kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml
+
+- name: Deploying haproxy on Master Node
+  command: kubectl apply -f custom-resources.yaml
 
 - name: Creating token for Slave
   command: kubeadm token create  --print-join-command
   register: token
 
+- name: Storing Logs and Generated token for future purpose.
+  local_action: copy content={{ token.stdout }} dest={{ token_file }}
+  
 - name: Cleaning Caches on RAM
   shell: echo 3 > /proc/sys/vm/drop_caches
