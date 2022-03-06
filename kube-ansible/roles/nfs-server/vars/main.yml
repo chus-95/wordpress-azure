@@ -1,9 +1,21 @@
 ---
 # vars file for nfs-server
+
+service_names:
+  - nfs-server
+
+dnf_packages: 
+  - nfs-utils
+  - net-tool
+
+
 shared_dir:
   - /mysql
   - /wp
 
-dnf_packages: 
-- nfs-utils
-- net-tool
+firewall_serv:
+  - nfs
+  - rpc-bind
+  - mountd
+
+
