@@ -1,12 +1,22 @@
 ---
 
 # vars file for k8s_slave
-service_names:
+slave_packages:
 
   - cri-o
+  - kubeadm
+  - kubectl
+  - iproute-tc
+
+service_names:
+     
+  - firewalld
+  - cri-o
   - kubelet
-
-
+  
+firewall_serv:
+  - masquerade 
+  
 ports_slave:
 - { port: "10250", proto: "tcp" }
 - { port: "30000-32767", proto: "tcp" }
