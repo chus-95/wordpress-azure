@@ -112,19 +112,10 @@
    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
    sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-- name: tigera instalation
-  shell: |
-   kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
-
-- name: definition script
-  shell: |
-   wget https://docs.projectcalico.org/manifests/custom-resources.yaml
-
-- name: Deploying haproxy on Master Node
-  command: kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml
-
-- name: Deploying haproxy on Master Node
-  command: kubectl apply -f custom-resources.yaml
+- name: setup flannel
+  shell:
+          cmd:  "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"  
+  ignore_errors: yes
 
 - name: Creating token for Slave
   command: kubeadm token create  --print-join-command
