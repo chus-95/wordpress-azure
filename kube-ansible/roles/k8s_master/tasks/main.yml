@@ -9,7 +9,7 @@
 
 - name: Set up the kubernetes repository.
   copy:
-     dest: /etc/yum.repos.d/kubernetes.repo
+  dest: /etc/yum.repos.d/kubernetes.repo
       content: |
         [kubernetes]
         name=Kubernetes
