@@ -20,8 +20,8 @@
         gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
         exclude=kubelet kubeadm kubectl
     
-- name: Installing Docker & kubeadm on Master Node
-  dnf:
+- name: Installing packages on Master Node
+  yum:
     name:
       - kubeadm
       - kubectl
