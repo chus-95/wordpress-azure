@@ -6,7 +6,7 @@ service_names:
 
 dnf_packages: 
   - nfs-utils
-  - net-tool
+  - net-tools
 
 
 shared_dir:
