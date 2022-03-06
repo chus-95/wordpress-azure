@@ -106,7 +106,7 @@
     immediate: yes
     rich_rule: "{{ item }}"
     state: enabled
-  with_items: "{{ rules_workers }}"
+  with_items: {{ rules_workers }}
 
 - name: Enabling Bridge Firewall Rule
   shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
