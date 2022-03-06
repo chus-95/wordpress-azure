@@ -9,8 +9,8 @@
 
 - name: Set up the kubernetes repository.
   copy:
-  dest: /etc/yum.repos.d/kubernetes.repo
-      content: |
+    dest: /etc/yum.repos.d/kubernetes.repo
+    content: |
         [kubernetes]
         name=Kubernetes
         baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64     
