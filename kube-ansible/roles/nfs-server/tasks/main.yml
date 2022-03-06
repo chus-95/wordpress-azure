@@ -1,16 +1,29 @@
 ---
 # tasks file for nfs-server
+
+
+- name: Staring & enabling cri-o & kubelet on nfs-server
+  systemd:
+   name: "{{ item }}"    
+   state: started
+   enabled: yes
+   masked: no
+   daemon_reload: yes
+  become: yes
+  with_items: "{{ service_names }}"
+  
+- name: Installing packages on nfs-server
+  dnf:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items: "{{ dnf_packages }}"  
+  
 - name: Creating mountable shared folders
   file: 
     path: "{{ item }}"
     state: directory
-  loop: "{{ shared_dir }}"
-
-- name: Install nfs utils
-  package:
-    name: nfs-utils
-    state: present
-  become: yes
+  with_items: "{{ shared_dir }}"
 
 - name: Configure nfs server
   copy:
@@ -19,38 +32,24 @@
       {{ shared_dir[0] }} *(rw,no_root_squash,sync)
       {{ shared_dir[1] }} *(rw,no_root_squash,sync)
 
-- name: Starting nfs server
-  service:
-    name: nfs-server 
-    state: started
-    enabled: yes
 
-- name: Recargamos la configuración del fichero /etc/exports
+- name:  configuration of the /etc/exports file 1
   shell: exportfs -r
   become: yes
-
-- name: Habilitamos servicios usados por NFS nfs
-  firewalld:
-    service: nfs
-    permanent: true
-    state: enabled
-  become: yes
-
-- name: Habilitamos servicios usados por NFS rpc-bind
-  firewalld:
-    service: rpc-bind
-    permanent: true
-    state: enabled
-  become: yes
-
-- name: Habilitamos servicios usados por NFS mountd
-  firewalld:
-    service: mountd
-    permanent: true
-    state: enabled
-  become: yes
   
-- name: Reiniciando el servicio Firewalld 
+- name:  configuration of the /etc/exports file 2
+  shell: exportfs -s
+  become: yes
+
+- name: Firewall configuration
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled
+  become: yes
+  with_items: "{{ firewall_serv }}" 
+  
+- name: Restarting the Firewalld service 
   systemd:
     name: firewalld
     state: restarted
