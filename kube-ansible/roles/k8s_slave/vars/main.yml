@@ -14,9 +14,6 @@ service_names:
   - cri-o
   - kubelet
   
-firewall_serv:
-  - masquerade 
-  
 ports_slave:
 - { port: "10250", proto: "tcp" }
 - { port: "30000-32767", proto: "tcp" }
