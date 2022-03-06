@@ -127,12 +127,14 @@
    mkdir -p $HOME/.kube
    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+   
+- name: Install flannel dns
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
   
 - name: ingress controller deploy
-  shell:
-    cmd:  "kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml"  
-  ignore_errors: yes
+  shell: "kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml"  
+  
 
 - name: Creating token for Slave
   command: kubeadm token create  --print-join-command
