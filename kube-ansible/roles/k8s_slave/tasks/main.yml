@@ -70,10 +70,6 @@
     permanent: yes
     immediate: yes
   with_items: "{{ ports_slave }}" 
-  
-- name: "kubeadm reset"
-  shell:
-    cmd: "echo y | kubeadm reset"
           
 - name: Copying token to worker nodes
   copy: src={{ token_file }} dest=join_token
