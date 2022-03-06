@@ -13,9 +13,6 @@ service_names:
   - cri-o
   - kubelet
 
-firewall_serv:
-  - masquerade 
-
 ports:
 - { port: "6443", proto: "tcp" }
 
