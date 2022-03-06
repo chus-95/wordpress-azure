@@ -26,12 +26,6 @@
     state: enabled
   become: yes
   with_items: "{{ firewall_serv }}" 
- 
-- name: Activate masquerade
-  firewalld:
-    masquerade: yes
-    state: enabled
-    permanent: true
 
 - name: Creating a repository file for Kubernetes
   file:
