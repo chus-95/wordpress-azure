@@ -14,14 +14,6 @@
    daemon_reload: yes
   become: yes
   with_items: "{{ service_names }}"
-  
-- name: Firewall configuration
-  firewalld:
-    service: "{{ item }}"
-    permanent: true
-    state: enabled
-  become: yes
-  with_items: "{{ firewall_serv }}" 
 
 - name: Creating a repository file for Kubernetes
   file:
