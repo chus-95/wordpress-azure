@@ -100,14 +100,13 @@
    immediate: yes
   with_items: "{{ ports_master }}"
   
- - name: FirewallD rules worker
+- name: FirewallD rules worker
   firewalld:
-    permanent: yes
-    immediate: yes
-    rich_rule: "{{ item }}"
-    state: enabled
-  with_items: 
-    - 'rule family=ipv4 source address=192.168.1.45/32 accept'
+   permanent: yes
+   immediate: yes
+   rich_rule: "{{ item }}"
+   state: enabled
+  with_items: "{{ rules_workers }}"
 
 - name: Enabling Bridge Firewall Rule
   shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
