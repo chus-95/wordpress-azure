@@ -8,6 +8,7 @@
    state: started
    enabled: yes
    masked: no
+   force: yes
    daemon_reload: yes
   become: yes
   with_items: "{{ service_names }}"
