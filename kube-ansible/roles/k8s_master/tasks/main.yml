@@ -8,6 +8,10 @@
     state: present
   become: yes
   with_items: "{{ master_packages }}" 
+  
+- name: Disabling SELinux state
+  selinux:
+    state: disable
 
 - name: Staring & enabling cri-o & kubelet on Master Node
   systemd:
