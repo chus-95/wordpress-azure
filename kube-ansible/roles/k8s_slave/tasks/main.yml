@@ -7,7 +7,7 @@
   
 - name: Disabling SELinux state
   selinux:
-    state: disable
+    state: disabled
 
 - name: Staring & enabling cri-o & kubelet on Master Node
   systemd:
