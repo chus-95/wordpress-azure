@@ -2,7 +2,7 @@
 # tasks file for k8s_master
 
 
-- name: Installing packages on master node
+- name: Installing packages on node
   dnf:
     name: "{{ item }}"
     state: present
@@ -13,7 +13,7 @@
   selinux:
     state: disabled
 
-- name: Staring & enabling cri-o & kubelet on Master Node
+- name: Staring & enabling cri-o & kubelet on Node
   systemd:
    name: "{{ item }}"    
    state: started
@@ -70,74 +70,8 @@
     content: |
         overlay
         br_netfilter
+        
+- name: Rebooting the server
+  reboot:
+    test_command: uptime
 
-- name: "Allow Network Ports in Firewalld 1"
-  firewalld:
-    permanent: yes
-    immediate: yes
-    port: "{{item.port}}/{{item.proto}}"
-    state: enabled 
-  with_items: "{{ ports }}"
-
-- name: Enabling Bridge Firewall Rule
-  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"     
-
-- name: Allow Network Ports in Firewalld 2
-  firewalld:
-   port: "{{item.port}}/{{item.proto}}"
-   state: enabled
-   permanent: yes
-   immediate: yes
-  with_items: "{{ ports_master }}"
-  
-- name: FirewallD rules worker
-  firewalld:
-   permanent: yes
-   immediate: yes
-   rich_rule: "{{ item }}"
-   state: enabled
-  with_items: "{{ rules_workers }}"
-
-- name: Enabling Bridge Firewall Rule
-  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
-
-- name: reload
-  service:
-    name: firewalld
-    state: reloaded
-    
-- name: Pulling images required for setting up a Kubernetes cluster
-  shell: kubeadm config images pull  
-  
-- name: Initializing Kubernetes cluster
-  shell: kubeadm init --ignore-preflight-errors=NumCPU --pod-network-cidr={{cidr_v}}
-
-- name: Copying required files
-  shell: |
-   mkdir -p $HOME/.kube
-   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-   sudo chown $(id -u):$(id -g) $HOME/.kube/config
-   
-- name: Install flannel dns
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
-  
-- name: ingress controller deploy
-  shell: "kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml"  
-  
-
-- name: Creating token for Slave
-  command: kubeadm token create  --print-join-command
-  register: token
-
-- name: Storing Logs and Generated token for future purpose.
-  local_action: copy content={{ token.stdout }} dest={{ token_file }}
-   
-- name: Cleaning Caches on RAM
-  shell: echo 3 > /proc/sys/vm/drop_caches
-  
-- name: Restarting the Firewalld service 
-  systemd:
-    name: firewalld
-    state: restarted
-  become: yes
