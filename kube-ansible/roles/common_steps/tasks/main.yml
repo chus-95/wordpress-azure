@@ -7,7 +7,7 @@
     name: "{{ item }}"
     state: present
   become: yes
-  with_items: "{{ master_packages }}" 
+  with_items: "{{ packages }}" 
   
 - name: Disabling SELinux state
   selinux:
