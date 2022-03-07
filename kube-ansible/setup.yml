@@ -3,6 +3,18 @@
     - name: Running NFS Server Role
       include_role:
         name: nfs-server
+        
+- hosts: ec2_master
+  tasks:
+    - name: Running common steps in master
+      include_role:
+        name: common_steps
+        
+- hosts: ec2_slave
+  tasks:
+    - name: Running common steps in worker
+      include_role:
+        name: common_steps
 
 - hosts: ec2_master
   gather_facts: no
