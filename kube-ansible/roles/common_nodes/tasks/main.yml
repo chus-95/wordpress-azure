@@ -12,18 +12,18 @@
 - name:  Server reboot
   reboot:
   become: yes
+ 
+#- name: Add br_netfilter to /etc/modules-load.d/
+# copy:
+#  content: "br_netfilter"
+#  dest: /etc/modules-load.d/br_netfilter.conf
+#  mode: "u=rw,g=,o="
 
-- name: Add br_netfilter to /etc/modules-load.d/
-  copy:
-    content: "br_netfilter"
-    dest: /etc/modules-load.d/br_netfilter.conf
-    mode: "u=rw,g=,o="
-
-- name: Enable the Kernel module br_netfilter
-  modprobe:
-    name: br_netfilter
-    state: present
-  become: yes
+#- name: Enable the Kernel module br_netfilter
+#  modprobe:
+#    name: br_netfilter
+#    state: present
+#  become: yes
 
 - name: Enable masquerade
   firewalld:
