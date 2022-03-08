@@ -25,11 +25,11 @@
   become: yes
 
 
-- name: Configure timezone Europe/Madrid
-  timezone:
-    name: Europe/Madrid
-  become: yes
-  become_method: sudo
+#- name: Configure timezone Europe/Madrid
+  #timezone:
+  #  name: Europe/Madrid
+  #become: yes
+  #become_method: sudo
   
 - name: Enable Chronyd service
   systemd:
