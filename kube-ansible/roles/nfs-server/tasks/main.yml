@@ -1,7 +1,6 @@
 ---
 # tasks file for nfs-server
 
-
 - name: Staring & enabling nfs-server
   systemd:
    name: "{{ item }}"    
@@ -20,9 +19,14 @@
   
 - name: Creating mountable shared folders
   file: 
-    path: "{{ item }}"
+    path: /mysql
     state: directory
-  with_items: "{{ shared_dir }}"
+  become: yes
+
+- name: Creating mountable shared folders
+  file: 
+    path: /wp
+    state: directory
   become: yes
 
 - name: Configure nfs server

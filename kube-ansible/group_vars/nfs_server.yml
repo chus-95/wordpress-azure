@@ -8,9 +8,6 @@ dnf_packages:
   - net-tools
   -'nfs4-acl-tools'
 
-
-shared_dir: [/mysql, /wp]
-
 firewall_serv:
   - nfs
   - rpc-bind
