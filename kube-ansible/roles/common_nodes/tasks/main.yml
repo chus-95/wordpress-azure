@@ -7,7 +7,7 @@
     path: /etc/fstab
     regexp: '^[^#](.*swap*)'
     replace: '#\1'  
-   become: yes
+  become: yes
 
 - name:  Server reboot
   reboot:
