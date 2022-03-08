@@ -32,7 +32,7 @@
       {{ shared_dir[0] }} *(rw,no_root_squash,sync)
       {{ shared_dir[1] }} *(rw,no_root_squash,sync)
   become: yes
-¡
+
 - name:  configuration of the /etc/exports file 
   shell: exportfs -r
   become: yes
