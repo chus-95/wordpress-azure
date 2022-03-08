@@ -6,5 +6,7 @@ dnf_packages:  ['nfs-utils','net-tools','nfs4-acl-tools']
 
 firewall_serv: ['nfs','rpc-bind','mountd']
 
+shared_dir: ['/mysql','/wp']
+
 
 

@@ -17,13 +17,7 @@
   
 - name: Creating mountable shared folders 1
   file: 
-    path: /mysql
-    state: directory
-  become: yes
-
-- name: Creating mountable shared folders 2
-  file: 
-    path: /wp
+    path: "{{ shared_dir }}"
     state: directory
   become: yes
 
