@@ -3,7 +3,7 @@
 - name: Workers conf
   hosts: workers
   vars_files:
-    - "group_vars/k8s_slave.yaml"
+    - "group_vars/k8s_slave.yml"
   gather_facts: true
   roles:
     - k8s_slave

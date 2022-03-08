@@ -3,7 +3,7 @@
 - name: Common config to master and worker nodes
   hosts: master:workers
   vars_files:
-    - "group_vars/common_nodes.yaml"
+    - "group_vars/common_nodes.yml"
   gather_facts: true
   roles:
     - common_nodes

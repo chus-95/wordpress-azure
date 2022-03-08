@@ -3,7 +3,7 @@
 - name: Common confs to all nodes
   hosts: all
   vars_files:
-    - "group_vars/common_conf.yaml"
+    - "group_vars/common_conf.yml"
   gather_facts: true
   roles:
     - common_conf
