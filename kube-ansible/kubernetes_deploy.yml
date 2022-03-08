@@ -1,0 +1,13 @@
+---
+
+# All playbooks related with Kubernetes instalation
+  
+- import_playbook: 01-common_confs.yml
+
+- import_playbook: 02-nfs_conf.yml
+
+- import_playbook: 03-master_worker_conf.yml
+
+- import_playbook: 04-k8s_master_conf.yml
+
+- import_playbook: 05-k8s_slave.yml

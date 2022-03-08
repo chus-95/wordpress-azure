@@ -1,0 +1,11 @@
+[all:vars]
+ansible_user=chus
+
+[master]
+master-node ansible_host=192.168.1.40
+
+[workers]
+worker1-node ansible_host=192.168.1.45
+
+[nfs]
+nfs-node ansible_host=192.168.1.40

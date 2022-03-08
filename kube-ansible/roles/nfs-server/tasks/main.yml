@@ -2,14 +2,12 @@
 # tasks file for nfs-server
 
 
-- name: Staring & enabling cri-o & kubelet on nfs-server
+- name: Staring & enabling nfs-server
   systemd:
    name: "{{ item }}"    
    state: started
    enabled: yes
    masked: no
-   force: yes
-   daemon_reload: yes
   become: yes
   with_items: "{{ service_names }}"
   
@@ -25,6 +23,7 @@
     path: "{{ item }}"
     state: directory
   with_items: "{{ shared_dir }}"
+  become: yes
 
 - name: Configure nfs server
   copy:
@@ -32,14 +31,10 @@
     content: |
       {{ shared_dir[0] }} *(rw,no_root_squash,sync)
       {{ shared_dir[1] }} *(rw,no_root_squash,sync)
-
-
-- name:  configuration of the /etc/exports file 1
-  shell: exportfs -r
   become: yes
-  
-- name:  configuration of the /etc/exports file 2
-  shell: exportfs -s
+¡
+- name:  configuration of the /etc/exports file 
+  shell: exportfs -r
   become: yes
 
 - name: Firewall configuration

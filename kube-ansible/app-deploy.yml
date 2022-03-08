@@ -1,0 +1,7 @@
+---
+
+- name: Deploy wordpress in kubernetes
+  hosts: master
+  gather_facts: true
+  roles:
+    - kube-wordpress

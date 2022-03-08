@@ -8,9 +8,7 @@
     port: "{{item.port}}/{{item.proto}}"
     state: enabled 
   with_items: "{{ ports }}"
-
-- name: Enabling Bridge Firewall Rule
-  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"     
+  become: yes
 
 - name: Allow Network Ports in Firewalld 2
   firewalld:
@@ -19,6 +17,7 @@
    permanent: yes
    immediate: yes
   with_items: "{{ ports_master }}"
+  become: yes
   
 - name: FirewallD rules worker
   firewalld:
@@ -27,34 +26,108 @@
    rich_rule: "{{ item }}"
    state: enabled
   with_items: "{{ rules_workers }}"
+  become: yes
 
 - name: Enabling Bridge Firewall Rule
   shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
 
-- name: reload
+- name: Reload firewalld
   service:
     name: firewalld
-    state: reloaded
+    state: restarted
+  become: yes
     
 - name: Pulling images required for setting up a Kubernetes cluster
-  shell: kubeadm config images pull  
+  shell: kubeadm config images pull
+  become: yes
   
 - name: Initializing Kubernetes cluster
   shell: kubeadm init --ignore-preflight-errors=NumCPU --pod-network-cidr={{cidr_v}}
+  become: yes
 
 - name: Copying required files
   shell: |
-   mkdir -p $HOME/.kube
-   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-   sudo chown $(id -u):$(id -g) $HOME/.kube/config
+   mkdir -p /root/.kube
+   sudo cp -i /etc/kubernetes/admin.conf /root/.kube/config
+   sudo chown $(id -u):$(id -g) /root/.kube/config
    
-- name: Install flannel dns
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+## SDN Calico or Flannel ##
+- name: Install SDN Flannel Azure
+  shell: kubectl apply -f https://docs.projectcalico.org/manifests/canal.yaml
+  register: kubectl_sdn
+  become: yes
+  when: sdn == 'flannel'
 
+- name: Show results SDN Flannel
+  debug:
+    msg: "{{ kubectl_sdn.stdout_lines }}"
+  when: sdn == 'flannel'
+
+- name: Install Tigera Operator
+  shell: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+  register: kubectl_operator
+  become: yes
+  when: sdn == 'calico'
+
+- name: Copy custom resources - Calico
+  copy:
+    src: custom-resources.yaml
+    dest: /root/custom-resources.yaml
+    mode: '0644'
+  become: yes
+  when: sdn == 'calico'
   
-- name: ingress controller deploy
-  shell: "kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml"  
+- name: Install SDN Calico
+  shell: kubectl apply -f /root/custom-resources.yaml
+  register: kubectl_sdn
+  become: yes
+  when: sdn == 'calico'
+
+- name: Show results SDN Calico
+  debug:
+    msg: "{{ kubectl_sdn.stdout_lines }}"
+  when: sdn == 'calico'
+
+- name: Deploy Nginx Ingress Controller
+  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.4/deploy/static/provider/baremetal/deploy.yaml
+  register: kubectl_nginxic
+  become: yes
+
+- name: Show results Nginx Ingress Controller
+  debug:
+    msg: "{{ kubectl_nginxic.stdout_lines }}"
   
+- name: Create user kubeadmin
+  user:
+    name: chus_kube
+    password: 'jadebustos' 
+    comment: User admin Kubernetes
+    create_home: yes
+    home: /home/chus_kube
+  become: yes
+
+- name: Create .kube  directory to chus_kube user
+  file:
+    path: /home/chus_kube/.kube
+    state: directory
+  become: yes
+
+- name: Permissions chus_kube user to access Kubernetes clustes
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/chus_kube/.kube/config
+    remote_src: yes
+    owner: chus_kube
+    group: chus_kube
+  become: yes
+
+- name: Give chus_kube user sudo permissions
+  lineinfile:
+    dest: /etc/sudoers.d/chus_kube
+    state: present
+    create: yes
+    line: 'ALL   ALL = (ALL) NOPASSWD: ALL'
+  become: yes
 
 - name: Creating token for Slave
   command: kubeadm token create  --print-join-command
@@ -65,9 +138,4 @@
    
 - name: Cleaning Caches on RAM
   shell: echo 3 > /proc/sys/vm/drop_caches
-  
-- name: Restarting the Firewalld service 
-  systemd:
-    name: firewalld
-    state: restarted
-  become: yes
+

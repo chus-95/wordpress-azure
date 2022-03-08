@@ -21,7 +21,7 @@ spec:
   storageClassName: local-storage
   nfs:
     path: /wp
-    server: {{ hostvars[groups['nfs_node'][0]]['ansible_all_ipv4_addresses'][0] }}
+    server: {{ hostvars[groups['nfs'][0]]['ansible_all_ipv4_addresses'][0] }}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -39,4 +39,4 @@ spec:
   storageClassName: local-storage
   nfs:
     path: /mysql
-    server: {{ hostvars[groups['nfs_node'][0]]['ansible_all_ipv4_addresses'][0] }}
+    server: {{ hostvars[groups['nfs'][0]]['ansible_all_ipv4_addresses'][0] }}

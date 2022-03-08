@@ -1,0 +1,9 @@
+---
+
+- name: Masters confs
+  hosts: master
+  vars_files:
+    - "group_vars/k8s_master.yaml"
+  gather_facts: true
+  roles:
+    - k8s_master
