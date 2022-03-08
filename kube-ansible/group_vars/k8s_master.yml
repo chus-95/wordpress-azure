@@ -1,17 +1,6 @@
 ---
 # vars file for k8s_master
 
-master_packages:
-  - cri-o
-  - kubeadm
-  - kubectl
-  - iproute-tc
-
-service_names:
-     
-  - firewalld
-  - cri-o
-  - kubelet
 
 ports:
 - { port: "6443", proto: "tcp" }
@@ -26,6 +15,6 @@ rules_workers:
 
 token_file: join_token
 
-cidr_v: 192.169.0.0/16
+cidr_v: '192.169.0.0/16'
 
 sdn: calico

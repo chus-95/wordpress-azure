@@ -1,16 +1,9 @@
 ---
 # vars file for k8s_master
 
-packages:
-  - cri-o
-  - kubeadm
-  - kubectl
-  - iproute-tc
-
-service_names:
+packages: ['cri-o','kubeadm','kubectl','iproute-tc']
+  
+service_names: ['firewalld', 'cri-o', 'kubelet']
      
-  - firewalld
-  - cri-o
-  - kubelet
 
 

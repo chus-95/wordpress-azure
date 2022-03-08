@@ -1,18 +1,6 @@
 ---
 
 # vars file for k8s_slave
-slave_packages:
-
-  - cri-o
-  - kubeadm
-  - kubectl
-  - iproute-tc
-
-service_names:
-     
-  - firewalld
-  - cri-o
-  - kubelet
   
 ports_slave:
 - { port: "10250", proto: "tcp" }
@@ -21,5 +9,5 @@ ports_slave:
 
 token_file: join_token
 
-ad_addr: 192.168.1.44
-cidr_v: 192.169.0.0/16
+ad_addr: '192.168.1.44'
+cidr_v: '192.169.0.0/16'

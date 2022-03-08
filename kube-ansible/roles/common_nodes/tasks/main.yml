@@ -92,19 +92,17 @@
 
 - name: Installing packages on node
   dnf:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
   become: yes
-  with_items: "{{ packages }}" 
   
 - name: Staring & enabling cri-o & kubelet on Node
   systemd:
-   name: "{{ item }}"    
+   name: "{{ service_names }}"    
    state: started
    enabled: yes
    masked: no
   become: yes
-  with_items: "{{ service_names }}"
 
 - name: Creating a repository file for Kubernetes
   file:

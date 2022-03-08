@@ -23,9 +23,8 @@
   firewalld:
    permanent: yes
    immediate: yes
-   rich_rule: "{{ item }}"
+   rich_rule: "{{ rules_workers }}"
    state: enabled
-  with_items: "{{ rules_workers }}"
   become: yes
 
 - name: Enabling Bridge Firewall Rule
