@@ -1,6 +1,6 @@
- - name: "Turn off swap"
-   shell: "swapoff -a"
-   become: yes
+- name: "Turn off swap"
+  shell: "swapoff -a"
+  become: yes
 
 - name: "Cmmenting Swap in /etc/fstab file"
   replace:
