@@ -8,9 +8,7 @@ dnf_packages:
   - net-tools
   -'nfs4-acl-tools'
 
-firewall_serv:
-  - nfs
-  - rpc-bind
-  - mountd
+firewall_serv: ['nfs','rpc-bind','mountd']
+
 
 

@@ -43,11 +43,11 @@
 
 - name: Firewall configuration
   firewalld:
-    service: "{{ item }}"
+    service: "{{ firewall_serv }}"
     permanent: true
     state: enabled
   become: yes
-  with_items: "{{ firewall_serv }}" 
+  
   
 - name: Restarting the Firewalld service 
   systemd:
