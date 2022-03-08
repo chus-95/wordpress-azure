@@ -1,4 +1,4 @@
----
+
 # tasks file for all
 
 - name: Update system package
@@ -29,6 +29,7 @@
   timezone:
     name: Europe/Madrid
   become: yes
+  become_method: sudo
   
 - name: Enable Chronyd service
   systemd:
