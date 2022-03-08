@@ -1,6 +1,6 @@
 # vars file for nfs-server
 
-service_names: ['nfs-server']
+service_names: 'nfs-server'
 
 dnf_packages:  ['nfs-utils','net-tools','nfs4-acl-tools']
 
