@@ -9,9 +9,7 @@ dnf_packages:
   -'nfs4-acl-tools'
 
 
-shared_dir:
-  - /mysql
-  - /wp
+shared_dir: ['/mysql', '/wp']
 
 firewall_serv:
   - nfs
