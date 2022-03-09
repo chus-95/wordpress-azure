@@ -118,7 +118,7 @@
   dnf:
     name: "{{ packages_kub }}"
     state: present
-    disable_excludes: Kubernetes
+    disable_excludes: kubernetes
   become: yes
   
 - name: Staring & enabling cri-o & kubelet on Node

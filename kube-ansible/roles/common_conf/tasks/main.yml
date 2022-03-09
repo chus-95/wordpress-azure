@@ -13,10 +13,10 @@
     state: present
   become: yes
 
-#- name: Disabling SELinux state
-#  selinux:
-#    state: disabled
-#  become: yes
+- name: Disabling SELinux state
+  selinux:
+    state: disabled
+  become: yes
 
 - name: Install Chrony 
   dnf:
