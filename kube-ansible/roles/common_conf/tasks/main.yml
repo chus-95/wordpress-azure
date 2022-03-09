@@ -1,12 +1,6 @@
 ---
 # tasks file for all
 
-#- name: Update system package
-#  dnf:
-#    name: "*"
-#    state: latest
-#  become: yes
-
 - name: Installing utils packages
   dnf:
     name: "{{ common_packages }}"
