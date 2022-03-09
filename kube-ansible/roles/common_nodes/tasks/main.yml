@@ -95,6 +95,12 @@
    path: /etc/yum.repos.d/kubernetes.repo
    state: touch
 
+- name: Installing packages on node
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  become: yes
+
 - name: Set up the kubernetes repository.
   copy:
     dest: /etc/yum.repos.d/kubernetes.repo
@@ -110,9 +116,9 @@
 
 - name: Installing packages on node
   dnf:
-    name: "{{ packages }}"
+    name: "{{ packages_kub }}"
     state: present
-    disable_excludes: Kubernetes
+    #disable_excludes: Kubernetes
   become: yes
   
 - name: Staring & enabling cri-o & kubelet on Node
