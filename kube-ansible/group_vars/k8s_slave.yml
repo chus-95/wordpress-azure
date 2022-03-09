@@ -2,10 +2,7 @@
 
 # vars file for k8s_slave
   
-ports_slave:
-- { port: "10250", proto: "tcp" }
-- { port: "30000-32767", proto: "tcp" }
-  
+ports_slave: ['10250/tcp','30000-32767/tcp']
 
 token_file: join_token
 

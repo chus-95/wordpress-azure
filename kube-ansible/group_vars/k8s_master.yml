@@ -2,16 +2,11 @@
 # vars file for k8s_master
 
 
-ports:
-- { port: "6443", proto: "tcp" }
+ports: '6443/tcp'
 
-ports_master:
-- { port: "10250-10252", proto: "tcp" }
-- { port: "10255", proto: "tcp" }
-- { port: "2379-2380", proto: "tcp" }
+ports_master: ['2379-2380/tcp','10255/tcp','10250-10252/tcp']
 
-rules_workers:
-- 'rule family=ipv4 source address=192.168.1.45/32 accept'
+rules_workers: 'rule family=ipv4 source address=192.168.1.45/32 accept'
 
 token_file: join_token
 

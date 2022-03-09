@@ -5,18 +5,16 @@
   firewalld:
     permanent: yes
     immediate: yes
-    port: "{{item.port}}/{{item.proto}}"
-    state: enabled 
-  with_items: "{{ ports }}"
+    port: "{{ ports }}"
+    state: enabled
   become: yes
 
 - name: Allow Network Ports in Firewalld 2
   firewalld:
-   port: "{{item.port}}/{{item.proto}}"
+   port: "{{ ports_master }}"
    state: enabled
    permanent: yes
    immediate: yes
-  with_items: "{{ ports_master }}"
   become: yes
   
 - name: FirewallD rules worker
