@@ -98,11 +98,13 @@
   
 - name: Staring & enabling cri-o & kubelet on Node
   systemd:
-   name: "{{ service_names }}"    
+   name: "{{ item }}"    
    state: started
    enabled: yes
    masked: no
   become: yes
+  with_items:
+    - "{{ service_names }}"
 
 - name: Creating a repository file for Kubernetes
   file:

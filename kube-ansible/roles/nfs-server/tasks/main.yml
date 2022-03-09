@@ -3,11 +3,13 @@
 
 - name: Staring & enabling nfs-server
   systemd:
-   name: "{{ service_names }}"    
+   name: "{{ item }}"    
    state: started
    enabled: yes
    masked: no
   become: yes
+  with_items:
+    - "{{ service_names }}"
   
 - name: Installing packages on nfs-server
   dnf:
