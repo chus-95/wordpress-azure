@@ -90,23 +90,6 @@
     warn: false
   become: yes
 
-- name: Installing packages on node
-  dnf:
-    name: "{{ packages }}"
-    state: present
-    disable_excludes: Kubernetes
-  become: yes
-  
-- name: Staring & enabling cri-o & kubelet on Node
-  systemd:
-   name: "{{ item }}"    
-   state: started
-   enabled: yes
-   masked: no
-  become: yes
-  with_items:
-    - "{{ service_names }}"
-
 - name: Creating a repository file for Kubernetes
   file:
    path: /etc/yum.repos.d/kubernetes.repo
@@ -124,6 +107,23 @@
         repo_gpgcheck=1
         gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
         exclude=kubelet kubeadm kubectl
+
+- name: Installing packages on node
+  dnf:
+    name: "{{ packages }}"
+    state: present
+    disable_excludes: Kubernetes
+  become: yes
+  
+- name: Staring & enabling cri-o & kubelet on Node
+  systemd:
+   name: "{{ item }}"    
+   state: started
+   enabled: yes
+   masked: no
+  become: yes
+  with_items:
+    - "{{ service_names }}"
   
 - name: Set up the cri-o repository.
   copy:
