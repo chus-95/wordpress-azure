@@ -3,14 +3,14 @@
 
 - name: "Allow Network Ports in Firewalld"
   firewalld:
-    port: "{{ items }}" 
+    port: "{{ item }}" 
     state: enabled
     permanent: yes
     immediate: yes 
   become: yes
   with_items:
     - "{{ ports_slave }}"
-
+  
 - name: Reboot Firewalld service
   systemd:
     name: firewalld
