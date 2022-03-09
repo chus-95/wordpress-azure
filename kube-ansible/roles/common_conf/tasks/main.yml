@@ -1,16 +1,22 @@
 ---
 # tasks file for all
 
+#- name: Update system package
+#  dnf:
+#    name: "*"
+#    state: latest
+#  become: yes
+
 - name: Installing utils packages
   dnf:
     name: "{{ common_packages }}"
     state: present
   become: yes
 
-- name: Disabling SELinux state
-  selinux:
-    state: disabled
-  become: yes
+#- name: Disabling SELinux state
+#  selinux:
+#    state: disabled
+#  become: yes
 
 - name: Install Chrony 
   dnf:
