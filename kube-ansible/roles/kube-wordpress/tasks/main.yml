@@ -19,4 +19,4 @@
 
 - name: Go to this below URL to access WordPress after few seconds
   debug:
-    msg: http://{{cidr_v}}:31000
+    msg: http://{{master-node}}:31000
