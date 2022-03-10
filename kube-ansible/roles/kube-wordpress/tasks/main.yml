@@ -5,14 +5,17 @@
   copy: 
    src: "K8s-WordPress"
    dest: "/root" 
+  become: true
 
 - name: Copying Kube Storage Class file
   template:
     src: "storage.yml.j2"
     dest: "/root/K8s-WordPress/storage.yml"
-    
+  become: true  
+  
 - name: Deploying Wordpress on Kubernetes
   command: kubectl create -k /root/K8s-WordPress/
+  become: true
 
 - name: Go to this below URL to access WordPress after few seconds
   debug:
