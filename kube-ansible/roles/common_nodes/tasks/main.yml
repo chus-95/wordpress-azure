@@ -61,7 +61,7 @@
     state: restarted
     enabled: yes
     masked: no
-  become: yes
+  become: y
 
 - name: "Updating config file"
   copy: 
@@ -76,18 +76,13 @@
   command: "sysctl --system"
   become: yes
 
+
 - name: Add cri-o repo 1
-  shell: dnf config-manager --add-repo=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_8_Stream/devel:kubic:libcontainers:stable.repo
-  args:
-    creates: /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo
-    warn: false
+  shell: wget -O /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_8_Stream/devel:kubic:libcontainers:stable.repo 
   become: yes
 
 - name: Add cri-o repo 2
-  shell: dnf config-manager --add-repo=https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.23:1.23.1/CentOS_8_Stream/devel:kubic:libcontainers:stable:cri-o:1.23:1.23.1.repo
-  args:
-    creates: /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:1.23:1.23.1.repo
-    warn: false
+  shell: wget -O /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:1.23:1.23.1.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.23:1.23.1/CentOS_8_Stream/devel:kubic:libcontainers:stable:cri-o:1.23:1.23.1.repo
   become: yes
 
 - name: Creating a repository file for Kubernetes
