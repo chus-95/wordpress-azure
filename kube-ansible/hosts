@@ -1,5 +1,6 @@
 [all:vars]
 ansible_user=chus
+#ansible_all_ipv4_addresses= 10.1.1.1
 
 [master]
 master-node ansible_host=192.168.1.40
