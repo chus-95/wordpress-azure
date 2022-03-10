@@ -3,7 +3,7 @@
 
 packages: ['cri-o','iproute-tc']
 
-packages_kub: ['kubeadm','kubectl','kubelet']
+packages_kub: ['kubeadm','kubectl']
   
 service_names: ['firewalld', 'cri-o', 'kubelet']
      
