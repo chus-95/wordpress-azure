@@ -2,6 +2,8 @@
 
 - name: Deploy wordpress in kubernetes
   hosts: master
+  vars_files:
+    - "group_vars/wordpress.yml"
   gather_facts: false
   roles:
     - kube-wordpress
