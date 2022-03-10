@@ -95,6 +95,13 @@
    path: /etc/yum.repos.d/kubernetes.repo
    state: touch
 
+- name: Set up the cri-o repository.
+  copy:
+    dest: /etc/modules-load.d/crio.conf
+    content: |
+        overlay
+        br_netfilter
+
 - name: Installing packages on node
   dnf:
     name: "{{ packages }}"
@@ -131,11 +138,6 @@
   with_items:
     - "{{ service_names }}"
   
-- name: Set up the cri-o repository.
-  copy:
-    dest: /etc/modules-load.d/crio.conf
-    content: |
-        overlay
-        br_netfilter
+
         
 
