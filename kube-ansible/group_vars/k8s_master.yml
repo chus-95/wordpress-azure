@@ -12,4 +12,4 @@ token_file: join_token
 
 cidr_v: '192.169.0.0/16'
 
-sdn: calico
+sdn: flannel
