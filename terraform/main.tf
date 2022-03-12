@@ -136,7 +136,7 @@ resource "random_id" "randomId" {
 
 #Storage account should hace unique name, so we create a random numbers to add in the name
 resource "azurerm_storage_account" "stAccount" {
-    name                     = "staccount987432102"
+    name                     = "diag${random_id.randomId.hex}"
     resource_group_name      = azurerm_resource_group.rg.name
     location                 = azurerm_resource_group.rg.location
     account_tier             = "Standard"
