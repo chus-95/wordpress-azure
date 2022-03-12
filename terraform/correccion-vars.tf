@@ -6,8 +6,8 @@ variable "vmachines" {
 
 variable "vmsize" {
   type = list(string)
-  description = "Entornos"
-  default = ["Standard_D1_v2", "Standard_D1_v2","Standard_D1_v2", "Standard_D1_v2"]
+  description = "vmsize"
+  default = ["Standard_D12_v2", "Standard_D1_v2","Standard_D1_v2", "Standard_D1_v2"]
 }
 
 
@@ -23,11 +23,7 @@ variable "resource_group" {
   default = "kubernetes_chus"
 }
 
-variable "security_group" {
-  type = string
-  description = "Nombre para la security group"
-  default = "sshtraffic"
-}
+
 
 # Check machines: https://azureprice.net/
 variable "vm_size" {
