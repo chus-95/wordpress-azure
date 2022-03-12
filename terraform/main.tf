@@ -43,7 +43,7 @@ resource "azurerm_subnet" "subnet" {
     count                  = length(var.vmachines)
     name                   = "terraformsubnet-${var.vmachines[count.index]}"
     resource_group_name    = azurerm_resource_group.rg.name
-    virtual_network_name   = azurerm_virtual_network.vnet.name
+    virtual_network_name   = azurerm_virtual_network.vnet[count.index].name
     address_prefixes       = ["10.0.${count.index + 30}.0/24"]
 
 }
@@ -116,7 +116,7 @@ resource "azurerm_network_interface" "nic" {
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association
 
 resource "azurerm_network_interface_security_group_association" "mySecGroupAssociation1" {
-    network_interface_id      = azurerm_network_interface.nic.id
+    network_interface_id      = azurerm_network_interface.nic[count.index].id
     network_security_group_id = azurerm_network_security_group.mySecGroup.id
 
 }
