@@ -20,7 +20,7 @@ variable "location" {
 variable "resource_group" {
   type = string
   description = "Nombre para la resource group"
-  default = "kubernetes_rg"
+  default = "kubernetes_chus"
 }
 
 variable "security_group" {
