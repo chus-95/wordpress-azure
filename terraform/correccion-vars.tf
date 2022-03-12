@@ -1,23 +1,41 @@
+variable "vmachines" {
+  type = list(string)
+  description = "vmachines"
+  default = ["master", "worker1", "worker2","nfs"]
+}
+
+variable "vmsize" {
+  type = list(string)
+  description = "Entornos"
+  default = ["Standard_D1_v2", "Standard_D1_v2","Standard_D1_v2", "Standard_D1_v2"]
+}
+
+
 variable "location" {
   type = string
   description = "Región de Azure donde crearemos la infraestructura"
-  default = "<YOUR REGION>"
+  default = "West Europe"
 }
 
-variable "storage_account" {
+variable "resource_group" {
   type = string
-  description = "Nombre para la storage account"
-  default = "<STORAGE ACCOUNT NAME>"
+  description = "Nombre para la resource group"
+  default = "kubernetes_rg"
 }
 
-variable "public_key_path" {
+variable "security_group" {
   type = string
-  description = "Ruta para la clave pública de acceso a las instancias"
-  default = "~/.ssh/id_rsa.pub" # o la ruta correspondiente
+  description = "Nombre para la security group"
+  default = "sshtraffic"
 }
 
-variable "ssh_user" {
+# Check machines: https://azureprice.net/
+variable "vm_size" {
   type = string
-  description = "Usuario para hacer ssh"
-  default = "<SSH USER>"
+  description = "Tamaño de la máquina virtual"
+  default = default = "Standard_D1_v2" # 3.5 GB, 1 CPU 
 }
+#Para los workers puede estar bien usar la propuesta: Standard_D1_v2,  o una superior: Standard_D11 # 14 GB, 2 CPU 
+#Para el master Standard_D12_v2 # 28 GB, 4 CPU 
+##Para la primera prueba que hagamos yo pondría: 2 workers + 1nf + master cada uno con Standard_D1_v2
+
