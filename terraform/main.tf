@@ -116,6 +116,7 @@ resource "azurerm_network_interface" "nic" {
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association
 
 resource "azurerm_network_interface_security_group_association" "mySecGroupAssociation1" {
+    count                     = length(var.vmachines)
     network_interface_id      = azurerm_network_interface.nic[count.index].id
     network_security_group_id = azurerm_network_security_group.mySecGroup.id
 
@@ -148,6 +149,16 @@ resource "azurerm_storage_account" "stAccount" {
 
 }
 
+resource "tls_private_key" "example_ssh" {
+    algorithm = "RSA"
+    rsa_bits = 4096
+}
+
+output "tls_private_key" { 
+    value = tls_private_key.example_ssh.private_key_pem 
+    sensitive = true
+}
+
 # Creamos una máquina virtual
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine
 
@@ -162,9 +173,10 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
     disable_password_authentication = true
 
     admin_ssh_key {
-        username   = "chus"
-        public_key = file("home/chus/.ssh/id_rsa.pub")
+        username = "chus"
+        public_key = tls_private_key.example_ssh.public_key_openssh 
     }
+
 
     os_disk {
         caching              = "ReadWrite"
