@@ -1,13 +1,13 @@
 variable "vmachines" {
   type = list(string)
   description = "vmachines"
-  default = ["master", "worker1", "worker2","nfs"]
+  default = ["master", "worker1"]
 }
 
 variable "vmsize" {
   type = list(string)
   description = "vmsize"
-  default = ["Standard_D12_v2", "Standard_D1_v2","Standard_D1_v2", "Standard_D1_v2"]
+  default = ["Standard_D12_v2", "Standard_E2_v3"]
 }
 
 
