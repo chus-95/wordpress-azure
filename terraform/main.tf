@@ -161,7 +161,7 @@ resource "tls_private_key" "example_ssh" {
     alhorithm = "RSA"
     rsa_bits = 4096
 }
-output "tls_private_key" { values= tls_private_key.example_ssh.tls_private_key_pem}
+output "tls_private_key" { values= tls_private_key.example_ssh.tls_private_key}
 
 
 # Creamos una máquina virtual
