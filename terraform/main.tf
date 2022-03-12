@@ -117,7 +117,7 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_network_interface_security_group_association" "mySecGroupAssociation1" {
     count                     = length(var.vmachines)
     network_interface_id      = azurerm_network_interface.nic[count.index].id
-    network_security_group_id = azurerm_network_security_group.mySecGroup.id
+    network_security_group_id = azurerm_network_security_group.mySecGroup[count.index].id
 
 }
 
