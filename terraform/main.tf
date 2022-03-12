@@ -99,7 +99,7 @@ resource "azurerm_network_interface" "nic" {
 
     ip_configuration {
     name                           = "myipconfiguration1"
-    subnet_id                      = azurerm_subnet.subnet.id 
+    subnet_id                      = azurerm_subnet.subnet[count.index].id 
     private_ip_address_allocation  = "Dynamic"
     #private_ip_address             = "10.0.1.10"
     public_ip_address_id           = element(azurerm_public_ip.myPublicIp1.*.id, count.index)
