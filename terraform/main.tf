@@ -25,9 +25,8 @@ resource "azurerm_resource_group" "rg" {
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network
         
 resource "azurerm_virtual_network" "vnet" {
-    count               = length(var.vmachines)
-    name                = "terraformnet-${var.vmachines[count.index]}"
-    address_space       = ["10.0.${count.index + 30}.0/16"]
+    name                = "terraformnet"
+    address_space       = ["10.0.0.0/16"]
     location            = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
@@ -40,11 +39,10 @@ resource "azurerm_virtual_network" "vnet" {
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet
 
 resource "azurerm_subnet" "subnet" {
-    count                  = length(var.vmachines)
-    name                   = "terraformsubnet-${var.vmachines[count.index]}"
+    name                   = "terraformsubnet"
     resource_group_name    = azurerm_resource_group.rg.name
-    virtual_network_name   = azurerm_virtual_network.vnet[count.index].name
-    address_prefixes       = ["10.0.${count.index + 30}.0/24"]
+    virtual_network_name   = azurerm_virtual_network.vnet.name
+    address_prefixes       = ["10.0.0.0/24"]
 
 }
 
@@ -99,7 +97,7 @@ resource "azurerm_network_interface" "nic" {
 
     ip_configuration {
     name                           = "myipconfiguration1"
-    subnet_id                      = azurerm_subnet.subnet[count.index].id 
+    subnet_id                      = azurerm_subnet.subnet.id
     private_ip_address_allocation  = "Dynamic"
     #private_ip_address             = "10.0.1.10"
     public_ip_address_id           = element(azurerm_public_ip.myPublicIp1.*.id, count.index)
