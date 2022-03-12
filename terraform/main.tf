@@ -156,13 +156,6 @@ resource "azurerm_storage_account" "stAccount" {
     }
 
 }
-# Create (and display) an SSH key
-resource "tls_private_key" "example_ssh" {
-    alhorithm = "RSA"
-    rsa_bits = 4096
-}
-output "tls_private_key" { values= tls_private_key.example_ssh.tls_private_key}
-
 
 # Creamos una máquina virtual
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine
@@ -179,7 +172,7 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
 
     admin_ssh_key {
         username   = "chus"
-        public_key = tls_private_key.example_ssh.public_key_openssh
+        public_key = file("home/chus/.ssh/id_rsa.pub")
     }
 
     os_disk {
