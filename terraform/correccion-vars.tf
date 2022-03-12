@@ -33,7 +33,7 @@ variable "security_group" {
 variable "vm_size" {
   type = string
   description = "Tamaño de la máquina virtual"
-  default = default = "Standard_D1_v2" # 3.5 GB, 1 CPU 
+  default = "Standard_D1_v2" # 3.5 GB, 1 CPU 
 }
 #Para los workers puede estar bien usar la propuesta: Standard_D1_v2,  o una superior: Standard_D11 # 14 GB, 2 CPU 
 #Para el master Standard_D12_v2 # 28 GB, 4 CPU 

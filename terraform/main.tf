@@ -172,7 +172,7 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
     name                = "terraformVM-${var.vmachines[count.index]}"
     resource_group_name = azurerm_resource_group.rg.name
     location            = azurerm_resource_group.rg.location
-    size                = {var.vmsize[count.index]}
+    size                = var.vmsize[count.index]
     admin_username      = "chus"
     network_interface_ids = [element(azurerm_network_interface.nic.*.id, count.index)]
     disable_password_authentication = true
