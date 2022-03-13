@@ -3,10 +3,10 @@ ansible_user=chus
 ansible_all_ipv4_addresses= 10.1.1.1
 
 [master]
-master-node ansible_host=20.224.93.58
+master-node ansible_host=20.107.97.77
 
 [workers]
-worker1-node ansible_host=20.224.75.89
+worker1-node ansible_host=20.107.23.35
 
 [nfs]
-nfs-node ansible_host=20.224.93.58
+nfs-node ansible_host=20.107.97.77
