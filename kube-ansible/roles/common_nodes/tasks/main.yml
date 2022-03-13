@@ -97,12 +97,6 @@
         overlay
         br_netfilter
 
-- name: Installing packages on node
-  dnf:
-    name: "{{ packages }}"
-    state: present
-  become: yes
-
 - name: Set up the kubernetes repository.
   copy:
     dest: /etc/yum.repos.d/kubernetes.repo
@@ -115,6 +109,12 @@
         repo_gpgcheck=1
         gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
         exclude=kubelet kubeadm kubectl
+
+- name: Installing packages on node
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  become: yes
 
 - name: Installing packages kub on node
   dnf:
