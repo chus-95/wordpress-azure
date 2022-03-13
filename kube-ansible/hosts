@@ -3,10 +3,10 @@ ansible_user=maria
 ansible_all_ipv4_addresses= 10.1.1.1
 
 [master]
-master-node ansible_host=20.107.97.77
+master-node ansible_host=20.126.75.212
 
 [workers]
-worker1-node ansible_host=20.107.23.35
+worker1-node ansible_host=20.126.12.193
 
 [nfs]
-nfs-node ansible_host=20.107.97.77
+nfs-node ansible_host=20.126.75.212
