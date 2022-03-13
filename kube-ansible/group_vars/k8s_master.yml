@@ -6,10 +6,10 @@ ports: '6443/tcp'
 
 ports_master: ['2379-2380/tcp','10255/tcp','10250-10252/tcp','22/tcp']
 
-rules_workers: 'rule family=ipv4 source address=192.168.1.45/32 accept'
+rules_workers: 'rule family=ipv4 source address=20.224.75.89/32 accept'
 
 token_file: join_token
 
-cidr_v: '192.169.0.0/16'
+cidr_v: '20.225.0.0/16'
 
 sdn: flannel
