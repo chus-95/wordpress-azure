@@ -13,9 +13,8 @@
     state: present
   become: yes
 
-- name: Disabling SELinux state
-  selinux:
-    state: disabled
+- name: Disabled Selinux
+  shell: sed -i s/=enforcing/=disabled/g /etc/selinux/config
   become: yes
 
 - name: Install Chrony 
@@ -24,13 +23,10 @@
     state: present
   become: yes
 
-
 - name: Configure timezone Europe/Madrid
-  timezone:
-    name: Europe/Madrid
+  shell: timedatectl set-timezone Europe/Madrid
   become: yes
-  become_method: sudo
-  
+    
 - name: Enable Chronyd service
   systemd:
     name: chronyd

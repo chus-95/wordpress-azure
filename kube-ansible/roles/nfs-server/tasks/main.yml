@@ -1,15 +1,23 @@
 ---
 # tasks file for nfs-server
 
-- name: Staring & enabling nfs-server
-  systemd:
-   name: "{{ item }}"    
-   state: started
-   enabled: yes
-   masked: no
+#- name: Staring & enabling nfs-server
+#  systemd:
+#   name: "{{ item }}"    
+#   state: started
+#   enabled: yes
+#   masked: no
+#  become: yes
+#  with_items:
+#    - "{{ service_names }}"
+
+- name: Enabling nfs-server
+  shell: systemctl enable nfs-server
   become: yes
-  with_items:
-    - "{{ service_names }}"
+
+- name: Staring nfs-server
+  shell: systemctl start nfs-server
+  become: yes
   
 - name: Installing packages on nfs-server
   dnf:
