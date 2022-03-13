@@ -1,11 +1,11 @@
 ---
 # tasks file for all
 
-- name: Update system package
-  dnf:
-    name: "*"
-    state: latest
-  become: yes
+#- name: Update system package
+#  dnf:
+#    name: "*"
+#    state: latest
+#  become: yes
 
 - name: Installing utils packages
   dnf:
