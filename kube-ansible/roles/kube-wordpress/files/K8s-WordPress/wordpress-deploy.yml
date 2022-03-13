@@ -10,7 +10,7 @@ spec:
     tier: frontend
   type:  NodePort
   ports:
-  - nodePort: 30363
+  - nodePort: 31000
     port:  80
     targetPort:  80
 ---
