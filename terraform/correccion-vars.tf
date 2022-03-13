@@ -23,8 +23,6 @@ variable "resource_group" {
   default = "kubernetes_chus"
 }
 
-
-
 # Check machines: https://azureprice.net/
 variable "vm_size" {
   type = string
