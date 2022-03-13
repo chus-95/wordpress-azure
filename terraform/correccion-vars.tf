@@ -7,7 +7,7 @@ variable "vmachines" {
 variable "vmsize" {
   type = list(string)
   description = "vmsize"
-  default = ["Standard_D11", "Standard_D1_v2"]
+  default = ["Standard_D12_v2", "Standard_D1_v2"]
 }
 
 
