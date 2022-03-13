@@ -1,11 +1,11 @@
 ---
 # tasks file for all
 
-#- name: Update system package
-#  dnf:
-#    name: "*"
-#    state: latest
-#  become: yes
+- name: Update system package
+  dnf:
+    name: "*"
+    state: latest
+  become: yes
 
 - name: Installing utils packages
   dnf:
@@ -25,11 +25,11 @@
   become: yes
 
 
-#- name: Configure timezone Europe/Madrid
-  #timezone:
-  #  name: Europe/Madrid
-  #become: yes
-  #become_method: sudo
+- name: Configure timezone Europe/Madrid
+  timezone:
+    name: Europe/Madrid
+  become: yes
+  become_method: sudo
   
 - name: Enable Chronyd service
   systemd:
