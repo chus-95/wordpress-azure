@@ -174,11 +174,10 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
 
     admin_ssh_key {
         username = "maria"
-        #public_key = tls_private_key.example_ssh.public_key_openssh
-        public_key = file("~/.ssh/id_rsa.pub")
+        public_key = tls_private_key.example_ssh.public_key_openssh
+        #public_key = file("~/.ssh/id_rsa.pub")
         
     }
-
 
     os_disk {
         caching              = "ReadWrite"
