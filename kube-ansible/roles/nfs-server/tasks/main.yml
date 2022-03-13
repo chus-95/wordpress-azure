@@ -12,11 +12,11 @@
 #    - "{{ service_names }}"
 
 - name: Enabling nfs-server
-  shell: systemctl enable nfs-server
+  shell: sudo systemctl enable nfs-server
   become: yes
 
 - name: Staring nfs-server
-  shell: systemctl start nfs-server
+  shell: sudo systemctl start nfs-server
   become: yes
   
 - name: Installing packages on nfs-server
