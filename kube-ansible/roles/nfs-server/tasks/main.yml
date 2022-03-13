@@ -23,6 +23,14 @@
     state: directory
   become: yes
 
+- name: create folders share_dir 0
+  shell:  mkdir /mysql
+  become: yes
+
+- name:  create folders share_dir 1
+  shell:  mkdir {{ shared_dir[1] }}
+  become: yes
+
 - name: Configure nfs server
   copy:
     dest: /etc/exports
