@@ -10,14 +10,6 @@
 #  become: yes
 #  with_items:
 #    - "{{ service_names }}"
-
-- name: Enabling nfs-server
-  shell: sudo systemctl enable nfs-server
-  become: yes
-
-- name: Staring nfs-server
-  shell: sudo systemctl start nfs-server
-  become: yes
   
 - name: Installing packages on nfs-server
   dnf:
@@ -51,6 +43,14 @@
   become: yes
   with_items:
     - "{{ firewall_serv }}"
+
+- name: Enabling nfs-server
+  shell: sudo systemctl enable nfs-server
+  become: yes
+
+- name: Staring nfs-server
+  shell: sudo systemctl start nfs-server
+  become: yes
 
 - name: Restarting the Firewalld service 
   systemd:
