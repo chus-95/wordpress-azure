@@ -7,7 +7,7 @@ variable "vmachines" {
 variable "vmsize" {
   type = list(string)
   description = "vmsize"
-  default = ["Standard_D12_v2", "Standard_D1_v2"]
+  default = ["Standard_D12_v2", "Standard_DS11-1_v2"]
 }
 
 
@@ -31,7 +31,7 @@ variable "vm_size" {
   description = "Tamaño de la máquina virtual"
   default = "Standard_D1_v2" # 3.5 GB, 1 CPU 
 }
-#Para los workers puede estar bien usar la propuesta: Standard_D1_v2,  o una superior: Standard_D11 # 14 GB, 2 CPU 
+#Para los workers puede estar bien usar la propuesta: Standard_DS11-1_v2 #14 GB, 1 CPU 
 #Para el master Standard_D12_v2 # 28 GB, 4 CPU 
 ##Para la primera prueba que hagamos yo pondría: 2 workers + 1nf + master cada uno con Standard_D1_v2
 
