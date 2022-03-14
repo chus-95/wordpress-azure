@@ -17,6 +17,3 @@
   command: kubectl create -k /root/K8s-WordPress/
   become: true
 
-- name: Go to this below URL to access WordPress after few seconds
-  debug:
-    msg: http://20.126.75.212:31100

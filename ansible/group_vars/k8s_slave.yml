@@ -1,5 +1,4 @@
 ---
-
 # vars file for k8s_slave
   
 ports_slave: ['10250/tcp','30000-32767/tcp','22/tcp']

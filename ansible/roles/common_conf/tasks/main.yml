@@ -1,6 +1,8 @@
 ---
 # tasks file for all
 
+# I left this code comment because I was having problems updating kubernetes when running it more than once.
+
 #- name: Update system package
 #  dnf:
 #    name: "*"

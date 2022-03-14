@@ -1,5 +1,5 @@
 ---
-# vars file for k8s_master
+# vars file for common nodes
 
 packages: ['cri-o','iproute-tc', cri-tools]
 

@@ -13,6 +13,8 @@
   reboot:
   become: yes
  
+# Apparently this code should work, but it gave me an error when I ran it. Without running it I have seen no apparent problems.
+
 #- name: Add br_netfilter to /etc/modules-load.d/
 # copy:
 #  content: "br_netfilter"

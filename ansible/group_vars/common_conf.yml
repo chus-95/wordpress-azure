@@ -1,1 +1,4 @@
+---
+# vars file for common config
+
 common_packages: ['net-tools', 'wget']
