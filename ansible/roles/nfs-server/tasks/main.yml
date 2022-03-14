@@ -22,15 +22,15 @@
     path: "{{ shared_dir }}"
     state: directory
   become: yes
-  
-#Solo correr la primera vez
-#- name: create folders share_dir 0
-#  shell:  mkdir {{ shared_dir[0]
-#  become: yes
 
-#- name:  create folders share_dir 1
-#  shell:  mkdir {{ shared_dir[1] }}
-#  become: yes
+#Solo correr la primera vez
+- name: create folders share_dir 0
+  shell:  mkdir {{ shared_dir[0]
+  become: yes
+
+- name:  create folders share_dir 1
+  shell:  mkdir {{ shared_dir[1] }}
+  become: yes
 
 - name: Configure nfs server
   copy:
