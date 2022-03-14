@@ -1,4 +1,4 @@
-# WordPress-on-Kubernetes-AWS-Ansible
+# WordPress-on-Kubernetes-Azure-Terraform+Ansible
 Provisioning Kubernetes Multi-Node Cluster on Azure instances with Terraform, using Ansible Automation and Deploying Wordpress on Kubernetes.
 
 ## Technologies used:
