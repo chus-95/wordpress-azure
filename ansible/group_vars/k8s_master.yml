@@ -6,7 +6,7 @@ ports: '6443/tcp'
 
 ports_master: ['2379-2380/tcp','10255/tcp','10250-10252/tcp','22/tcp']
 
-rules_workers: 'rule family=ipv4 source address=40.68.125.142/32 accept' #workers ip
+rules_workers: 'rule family=ipv4 source address=20.229.30.242/32 accept' #workers ip
 
 token_file: join_token
 
