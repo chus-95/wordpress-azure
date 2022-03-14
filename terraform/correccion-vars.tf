@@ -24,7 +24,7 @@ variable "virtual_network" {
 }
 
 variable "virtual_network_address" {
-  type = string
+  type = list(string)
   description = "Virtual network address"
   default = ["10.0.0.0/16"]
 }
@@ -37,7 +37,7 @@ variable "virtual_subnet" {
 }
 
 variable "virtual_subnet_address" {
-  type = string
+  type = list(string)
   description = "Virtual subnet address"
   default = ["10.0.0.0/24"]
 }

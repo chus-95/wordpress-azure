@@ -1,12 +1,12 @@
 [all:vars]
-ansible_user=chus
+ansible_user=maria
 ansible_all_ipv4_addresses= 20.1.1.1
 
 [master]
-master-node 20.126.75.212
+master-node ansible_host=20.126.75.212
 
 [workers]
-worker1-node 20.126.12.193
+worker1-node ansible_host=20.126.12.193
 
 [nfs]
-nfs-node 20.126.75.212
+nfs-node ansible_host=20.126.75.212
