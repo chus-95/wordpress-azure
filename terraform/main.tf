@@ -16,37 +16,37 @@ resource "azurerm_resource_group" "rg" {
     location = var.location
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 
 }
 
-# Creación de red
+# Network creation
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network
         
 resource "azurerm_virtual_network" "vnet" {
-    name                = "terraformnet"
-    address_space       = ["10.0.0.0/16"]
+    name                = var.virtual_network
+    address_space       = var.virtual_network_address
     location            = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 }
 
-# Creación de subnet
+# Subnet creation
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet
 
 resource "azurerm_subnet" "subnet" {
-    name                   = "terraformsubnet"
+    name                   = var.virtual_subnet
     resource_group_name    = azurerm_resource_group.rg.name
     virtual_network_name   = azurerm_virtual_network.vnet.name
-    address_prefixes       = ["10.0.0.0/24"]
+    address_prefixes       =var.virtual_subnet_address
 
 }
 
-# IP pública
+# Public IP 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip
 
 resource "azurerm_public_ip" "myPublicIp1" {
@@ -54,11 +54,11 @@ resource "azurerm_public_ip" "myPublicIp1" {
   name                = "terraformIp-${var.vmachines[count.index]}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
+  allocation_method   = var.IP_allocation
   sku                 = "Basic"
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 
 }# Security group
@@ -83,7 +83,7 @@ resource "azurerm_network_security_group" "mySecGroup" {
     }
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 }
 
@@ -97,21 +97,21 @@ resource "azurerm_network_interface" "nic" {
   resource_group_name = azurerm_resource_group.rg.name
 
     ip_configuration {
-    name                           = "myipconfiguration1"
+    name                           = var.nic_ip_conf
     subnet_id                      = azurerm_subnet.subnet.id
-    private_ip_address_allocation  = "Dynamic"
+    private_ip_address_allocation  = var.nic_ip_allocation
     #private_ip_address             = "10.0.1.10"
     public_ip_address_id           = element(azurerm_public_ip.myPublicIp1.*.id, count.index)
   }
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 
 }
 
 
-# Vinculamos el security group al interface de red
+# Link the security group to the network interface
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association
 
 resource "azurerm_network_interface_security_group_association" "mySecGroupAssociation1" {
@@ -121,7 +121,7 @@ resource "azurerm_network_interface_security_group_association" "mySecGroupAssoc
 
 }
 
-# Creat Storage account
+# Create Storage account
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account
 
 
@@ -143,7 +143,7 @@ resource "azurerm_storage_account" "stAccount" {
     account_replication_type = "LRS"
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 
 }
@@ -158,7 +158,7 @@ output "tls_private_key" {
     sensitive = true
 }
 
-# Creamos una máquina virtual
+# Virtual machine creation
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine
 
 resource "azurerm_linux_virtual_machine" "myVM1" {
@@ -173,28 +173,28 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
     
 
     admin_ssh_key {
-        username = "maria"
+        username = var.admin_ssh_key_user
         public_key = tls_private_key.example_ssh.public_key_openssh
         #public_key = file("~/.ssh/id_rsa.pub")
         
     }
 
     os_disk {
-        caching              = "ReadWrite"
-        storage_account_type = "Standard_LRS"
+        caching              = var.onDisk_caching
+        storage_account_type = var.onDisk_storage
     }
 
     plan {
-        name      = "centos-8-stream-free"
-        product   = "centos-8-stream-free"
-        publisher = "cognosys"
+        name      = var.vm_name
+        product   = var.vm_product
+        publisher = var.vm_publisher
     }
 
     source_image_reference {
-        publisher = "cognosys"
-        offer     = "centos-8-stream-free"
-        sku       = "centos-8-stream-free"
-        version   = "1.2019.0810"
+        publisher = var.vm_publisher
+        offer     = var.vm_name
+        sku       = var.vm_name
+        version   = var.vm_verion_img
     }
 
     boot_diagnostics {
@@ -202,7 +202,7 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
     }
 
     tags = {
-        environment = "CP2"
+        environment = var.environment
     }
 
 }
