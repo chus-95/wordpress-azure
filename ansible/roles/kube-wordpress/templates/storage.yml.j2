@@ -21,7 +21,7 @@ spec:
   storageClassName: local-storage
   nfs:
     path: /wp
-    server: {{ master-node }} #master/nfs
+    server: '13.94.168.246' #master/nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -39,4 +39,4 @@ spec:
   storageClassName: local-storage
   nfs:
     path: /mysql
-    server: {{ master-node }} #master
+    server: '13.94.168.246' #master
