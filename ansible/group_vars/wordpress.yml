@@ -1,2 +1,5 @@
-master-node: '20.126.75.212'
-slave-node : '20.126.12.193'
+#master-node: '20.126.75.212'
+#slave-node : '20.126.12.193'
+master-node: {{ hostvars[groups['master'][0].ansible_host]
+slave-node: {{ hostvars[groups['workers'][0].ansible_host]
+
