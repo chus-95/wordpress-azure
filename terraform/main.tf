@@ -175,8 +175,8 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
 
     admin_ssh_key {
         username = var.admin_ssh_key_user
-        public_key = tls_private_key.example_ssh.public_key_openssh
-        #public_key = file("~/.ssh/id_rsa.pub")
+        #public_key = tls_private_key.example_ssh.public_key_openssh
+        public_key = file("~/.ssh/id_rsa.pub")
         
     }
 
