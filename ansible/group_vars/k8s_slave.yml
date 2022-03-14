@@ -6,5 +6,4 @@ ports_slave: ['10250/tcp','30000-32767/tcp','22/tcp']
 
 token_file: join_token
 
-ad_addr: '20.126.75.212' #master node
-cidr_v: '20.127.0.0/16'
+
