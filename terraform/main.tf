@@ -61,7 +61,9 @@ resource "azurerm_public_ip" "myPublicIp1" {
         environment = var.environment
     }
 
-}# Security group
+}
+
+# Security group
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group
 
 resource "azurerm_network_security_group" "mySecGroup" {
@@ -109,7 +111,6 @@ resource "azurerm_network_interface" "nic" {
     }
 
 }
-
 
 # Link the security group to the network interface
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association
@@ -206,29 +207,3 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

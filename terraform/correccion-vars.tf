@@ -17,7 +17,6 @@ variable "environment" {
   default = "CP2"
 }
 
-
 variable "virtual_network" {
   type = string
   description = "Virtual network name"
@@ -112,13 +111,3 @@ variable "vm_verion_img" {
   description = "Verion image virtual machine"
   default = "1.2019.0810"
 }
-
-
-
-
-
-
-
-
-
-
